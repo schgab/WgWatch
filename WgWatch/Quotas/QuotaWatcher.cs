@@ -53,7 +53,13 @@ public class QuotaWatcher : BackgroundService
         }
         foreach (var quota in _quotas)
         {
-            quota.MonitoredInterface = interfaces.First(i => i.Name == quota.MonitoredInterface.Name);
+            var interf = interfaces.FirstOrDefault(i => i.Name == quota.MonitoredInterface.Name);
+            if (interf is null)
+            {
+                _logger.LogError($"Interface {quota.MonitoredInterface.Name} was not found on Mikrotik! Perhaps it doesn't exist anymore");
+                continue;
+            }
+            quota.MonitoredInterface = interf;
         }
     }
 
