@@ -2,7 +2,7 @@ using WgWatch.Mikrotik.Model;
 using WgWatch.Options;
 using WgWatch.Quotas;
 using Xunit.Abstractions;
-
+using FluentAssertions;
 namespace WgWatch.Test;
 
 public class QuotaTest
@@ -25,7 +25,7 @@ public class QuotaTest
             StartDate = DateTime.Now.AddDays(-30),
             Period = period
         };
-        Assert.Equal(expected,q.IsOutsideMonitoringPeriod);
+        q.IsOutsideMonitoringPeriod.Should().Be(expected);
     }
     [Theory]
     [InlineData(1_073_741_824, 0, 1.0)] //1GB
@@ -38,7 +38,7 @@ public class QuotaTest
             RxByte = rxbytes,
             TxByte = txbytes,
         });
-        Assert.Equal(expected,q.TrafficUsedGigabytes);
+        q.TrafficUsedGigabytes.Should().Be(expected);
     }
     [Theory]
     [InlineData(ActionOnQuotaExceeded.Auto)]
@@ -55,7 +55,7 @@ public class QuotaTest
             Action = actionOnQuotaExceeded,
             QuotaLimit = 10
         };
-        Assert.Equal(ActionToPerform.DisableInterface,q.EvaluateQuotaAction());
+        q.EvaluateQuotaAction().Should().Be(ActionToPerform.DisableInterface);
     }
     [Fact]
     public void QuotaAction_Should_Be_EnableInterface()
@@ -70,7 +70,7 @@ public class QuotaTest
             Action = ActionOnQuotaExceeded.Auto,
             QuotaLimit = 10
         };
-        Assert.Equal(ActionToPerform.EnableInterface,q.EvaluateQuotaAction());
+        q.EvaluateQuotaAction().Should().Be(ActionToPerform.EnableInterface);
     }
     [Theory]
     [InlineData(true,"")]
@@ -90,7 +90,7 @@ public class QuotaTest
             Action = ActionOnQuotaExceeded.Auto,
             QuotaLimit = 10
         };
-        Assert.Equal(ActionToPerform.None,q.EvaluateQuotaAction());
+        q.EvaluateQuotaAction().Should().Be(ActionToPerform.None);
     }
     [Fact]
     public void QuotaAction_Should_Be_None_DueTo_Action_Shut()
@@ -106,6 +106,6 @@ public class QuotaTest
             Action = ActionOnQuotaExceeded.Shut,
             QuotaLimit = 10
         };
-        Assert.Equal(ActionToPerform.None,q.EvaluateQuotaAction());
+        q.EvaluateQuotaAction().Should().Be(ActionToPerform.None);
     }
 }

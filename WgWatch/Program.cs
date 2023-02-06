@@ -13,6 +13,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.ConfigureOptions<MikrotikHostOptionsSetup>();
         services.AddHostedService<QuotaWatcher>();
     })
+    .UseSystemd()
     .Build();
 
 host.Run();
