@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Serialization;
 
 namespace WgWatch.Mikrotik.Model;
@@ -16,4 +17,6 @@ public class Interface
     public ulong TxByte { get; set; }
     [JsonPropertyName("name")]
     public string? Name { get; set; }
+    [JsonPropertyName("comment")]
+    public string? Comment { get; set; }
 }

@@ -1,6 +1,6 @@
 using WgWatch.Mikrotik;
 using WgWatch.Options;
-using WgWatch.Quota;
+using WgWatch.Quotas;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>

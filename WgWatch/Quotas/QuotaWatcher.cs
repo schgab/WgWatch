@@ -2,7 +2,7 @@ using Microsoft.Extensions.Options;
 using WgWatch.Mikrotik;
 using WgWatch.Options;
 
-namespace WgWatch.Quota;
+namespace WgWatch.Quotas;
 
 public class QuotaWatcher : BackgroundService
 {
@@ -21,7 +21,6 @@ public class QuotaWatcher : BackgroundService
     private async Task Setup()
     {
         var interfaces = await _restApi.ReadInterfaces();
-        
         foreach (var interfaceConfig in _hostOptions.Interfaces)
         {
             var monitoredInterface = interfaces?.FirstOrDefault(i => i.Name == interfaceConfig.Name);
@@ -60,25 +59,28 @@ public class QuotaWatcher : BackgroundService
 
     private async Task EvaluateQuota(Quota quota)
     {
-        if (quota.TrafficUsedGigabytes > quota.QuotaLimit && quota.EndDate > DateTime.Now)
+        switch (quota.EvaluateQuotaAction())
         {
-            if (quota.Action is ActionOnQuotaExceeded.None)
-            {
-                return;
-            }
-            _logger.LogWarning($"Shutting down interface {quota.MonitoredInterface.Name}. Limit of {quota.QuotaLimit}GB is exceeded");
-            await _restApi.DisableInterface(quota.MonitoredInterface);
-            return;
+            case ActionToPerform.None:
+                break;
+            case ActionToPerform.DisableInterface:
+                _logger.LogWarning($"Shutting down interface {quota.MonitoredInterface.Name}. Limit of {quota.QuotaLimit}GB is exceeded");
+                await _restApi.DisableInterface(quota.MonitoredInterface);
+                break;
+            case ActionToPerform.EnableInterface:
+                _logger.LogInformation($"Enabled {quota.MonitoredInterface.Name}");
+                await _restApi.EnableInterface(quota.MonitoredInterface);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
-        if (quota.EndDate < DateTime.Now)
+        if (quota.IsOutsideMonitoringPeriod)
         {
-            if (quota.Action is ActionOnQuotaExceeded.Auto)
-            {
-                await _restApi.EnableInterface(quota.MonitoredInterface);
-            }
-
+            _logger.LogInformation($"Resetting traffic counter for interface {quota.MonitoredInterface.Name}");
             await _restApi.ResetTrafficCounter(quota.MonitoredInterface);
+            quota.StartDate = DateTime.Now;
+            quota.SaveToFile();
         }
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
