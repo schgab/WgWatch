@@ -8,3 +8,4 @@ riderModule.iml
 **/publish
 
 WgWatch.sln.DotSettings.user
+WgWatch/config.dev.json

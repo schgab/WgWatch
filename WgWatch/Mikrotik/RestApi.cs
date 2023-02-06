@@ -13,13 +13,9 @@ using System.Net.Http.Json;
 public class RestApi
 {
     private readonly HttpClient _httpClient;
-    public RestApi(HttpClient httpClient, IOptions<MikrotikHostOptions> mikrotikHostOptions)
+    public RestApi(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri(mikrotikHostOptions.Value.Endpoint!);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue
-        ("Basic",
-            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{mikrotikHostOptions.Value.User}:{mikrotikHostOptions.Value.Password}")));
     }
 
     public async Task<List<Interface>?> ReadInterfaces()

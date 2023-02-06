@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Options;
 using WgWatch.Mikrotik;
 using WgWatch.Options;
 
@@ -10,12 +9,12 @@ public class QuotaWatcher : BackgroundService
     private readonly ILogger<QuotaWatcher> _logger;
     private readonly RestApi _restApi;
     private readonly MikrotikHostOptions _hostOptions;
-    private readonly List<Quota> _quotas = new List<Quota>();
-    public QuotaWatcher(ILogger<QuotaWatcher> logger, RestApi restApi, IOptions<MikrotikHostOptions> hostOptions)
+    private readonly List<Quota> _quotas = new();
+    public QuotaWatcher(ILogger<QuotaWatcher> logger, RestApi restApi, MikrotikHostOptions hostOptions)
     {
         _logger = logger;
         _restApi = restApi;
-        _hostOptions = hostOptions.Value;
+        _hostOptions = hostOptions;
     }
 
     private async Task Setup()
