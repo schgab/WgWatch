@@ -1,5 +1,7 @@
 # What is WgWatch
-WgWatch is a service which monitors and limits interfaces' traffic usage on a mikrotik router.
+WgWatch is a service which monitors and limits interfaces' data usage on a mikrotik router.
+
+This project exists because I needed a way to limit data usage for vpn users.
 
 ## Prerequisites
 Run the following commands on your Mikrotik Router to enable the rest api. WgWatch is designed to allow self signed certificates.
@@ -37,10 +39,12 @@ The main configuration is the following:
 
 An interface has the following options:
 - `name` - has to match the name of the interface on the Mikrotik device
-- `quota` - the amount of traffic (in GiB) the interface is allowed to use in the specified time period
-- `period` - the time period (in whole days). After the period the traffic usage is reset
+- `quota` - the amount of data (in GiB) the interface is allowed to use in the specified time period
+- `period` - the time period (in whole days). After the period the data usage is reset
 - `action` - takes one of three possible values 
   - `none` - nothing happens when the quota is exceeded
   - `shut` - the interface gets disabled when quota is exceeded
   - `auto` - same as shut, but the interface gets enabled after new period starts
 
+## Ignoring monitored interfaces
+Simply add `wgwatch-ignore` to the interface comment on the Mikrotik router.
