@@ -1,0 +1,14 @@
+{
+    "intervalinminutes" : 5,
+    "endpoint": "https://{yourdomain or your ip}/rest/",
+    "user": "api",
+    "password": "yourSecurePassword",
+    "interfaces": [
+      {
+        "name": "wg-test",
+        "quota": 100,
+        "period": 30,
+        "action": "shut"
+      }
+    ]
+}
