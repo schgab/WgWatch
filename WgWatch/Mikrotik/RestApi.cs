@@ -33,6 +33,7 @@ public class RestApi
     }
     public async Task ResetTrafficCounter(Interface interf)
     {
+        //PostAsJsonAsync doesn't work on mikrotik
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, "interface/reset-counters");
         requestMessage.Content =
             new StringContent(
@@ -50,7 +51,7 @@ public class RestApi
     }
     public async Task SetInterfaceAdminStatus(Interface interf, bool adminStatus)
     {
-        //PatchAsJsonAsync doesn't work
+        //PatchAsJsonAsync doesn't work on mikrotik
         var requestMessage = new HttpRequestMessage(HttpMethod.Patch, $"interface/{interf.Name}");
         requestMessage.Content =
             new StringContent(
