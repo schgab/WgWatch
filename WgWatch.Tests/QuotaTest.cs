@@ -3,17 +3,10 @@ using WgWatch.Options;
 using WgWatch.Quotas;
 using Xunit.Abstractions;
 using FluentAssertions;
-namespace WgWatch.Test;
+namespace WgWatch.Tests;
 
 public class QuotaTest
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    public QuotaTest(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-
     [Theory]
     [InlineData(29,true)]
     [InlineData(30,true)]

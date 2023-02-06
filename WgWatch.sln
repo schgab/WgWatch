@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WgWatch", "WgWatch\WgWatch.csproj", "{E9FE26D9-6469-42FE-9573-09BC94F7FCD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WgWatch.Test", "WgWatch.Test\WgWatch.Test.csproj", "{94DB7CE2-B2C3-45F9-821B-ACD34A0B4BCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WgWatch.Tests", "WgWatch.Tests\WgWatch.Tests.csproj", "{94DB7CE2-B2C3-45F9-821B-ACD34A0B4BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
