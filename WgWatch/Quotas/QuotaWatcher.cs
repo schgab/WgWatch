@@ -6,7 +6,7 @@ namespace WgWatch.Quotas;
 
 public class QuotaWatcher : BackgroundService
 {
-    private const int Interval = 1000 * 1;
+    private const int Minute = 1000 * 60; //1 minute
     private readonly ILogger<QuotaWatcher> _logger;
     private readonly RestApi _restApi;
     private readonly MikrotikHostOptions _hostOptions;
@@ -93,7 +93,7 @@ public class QuotaWatcher : BackgroundService
             {
                 await EvaluateQuota(quota);
             }
-            await Task.Delay(Interval, stoppingToken);
+            await Task.Delay(Minute * _hostOptions.IntervalInMinutes, stoppingToken);
         }
     }
 }

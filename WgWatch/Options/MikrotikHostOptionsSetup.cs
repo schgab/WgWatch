@@ -29,6 +29,7 @@ public class MikrotikHostOptionsSetup : IConfigureOptions<MikrotikHostOptions>
             Converters = { new JsonStringEnumConverter() }
         });
         options.Endpoint = mikOptions!.Endpoint;
+        options.IntervalInMinutes = mikOptions.IntervalInMinutes;
         options.Password = mikOptions.Password;
         options.User = mikOptions.User;
         options.Interfaces = mikOptions.Interfaces.ToList();
