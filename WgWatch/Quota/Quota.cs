@@ -5,16 +5,21 @@ namespace WgWatch.Quota;
 
 public class Quota
 {
+    public Quota(Interface monitoredInterface)
+    {
+        MonitoredInterface = monitoredInterface;
+    }
+
     public DateTime StartDate { get; private set; } = DateTime.Now;
     public DateTime EndDate => StartDate.AddDays(Period);
     public Interface MonitoredInterface { get; set; }
-    public ulong TrafficUsedGigabytes => (MonitoredInterface?.RxByte ?? 0 + MonitoredInterface?.TxByte ?? 0) / (1024 ^ 3);
-    public ulong QuotaLimit { get; set; }
-    public int Period { get; set; }
-    public ActionOnQuotaExceeded Action { get; set; }
+    public double TrafficUsedGigabytes => (MonitoredInterface.RxByte + MonitoredInterface.TxByte) / Math.Pow(1024,3);
+    public double QuotaLimit { get; init; }
+    public int Period { get; init; }
+    public ActionOnQuotaExceeded Action { get; init; }
     public void SaveToFile()
     {
-        File.WriteAllText(MonitoredInterface.Name,StartDate.ToBinary().ToString());
+        File.WriteAllText(MonitoredInterface.Name!,StartDate.ToBinary().ToString());
     }
 
     public void LoadFromFile()

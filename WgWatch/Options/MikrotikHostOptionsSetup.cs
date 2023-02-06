@@ -28,7 +28,7 @@ public class MikrotikHostOptionsSetup : IConfigureOptions<MikrotikHostOptions>
             PropertyNameCaseInsensitive = true,
             Converters = { new JsonStringEnumConverter() }
         });
-        options.Endpoint = mikOptions.Endpoint;
+        options.Endpoint = mikOptions!.Endpoint;
         options.Password = mikOptions.Password;
         options.User = mikOptions.User;
         options.Interfaces = mikOptions.Interfaces.ToList();

@@ -13,15 +13,13 @@ using System.Net.Http.Json;
 public class RestApi
 {
     private readonly HttpClient _httpClient;
-    private readonly MikrotikHostOptions _mikrotikHostOptions;
     public RestApi(HttpClient httpClient, IOptions<MikrotikHostOptions> mikrotikHostOptions)
     {
         _httpClient = httpClient;
-        _mikrotikHostOptions = mikrotikHostOptions.Value;
-        _httpClient.BaseAddress = new Uri(_mikrotikHostOptions.Endpoint);
+        _httpClient.BaseAddress = new Uri(mikrotikHostOptions.Value.Endpoint!);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue
         ("Basic",
-            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{_mikrotikHostOptions.User}:{_mikrotikHostOptions.Password}")));
+            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{mikrotikHostOptions.Value.User}:{mikrotikHostOptions.Value.Password}")));
     }
 
     public async Task<List<Interface>?> ReadInterfaces()

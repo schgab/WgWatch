@@ -1,4 +1,3 @@
-using System.Data.Common;
 using System.Text.Json.Serialization;
 
 namespace WgWatch.Mikrotik.Model;

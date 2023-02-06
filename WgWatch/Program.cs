@@ -1,12 +1,9 @@
-using System.Net.Http.Headers;
-using System.Text;
-using WgWatch;
 using WgWatch.Mikrotik;
 using WgWatch.Options;
 using WgWatch.Quota;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((hostContext,services) =>
+    .ConfigureServices(services =>
     {
         services.AddHttpClient<RestApi>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
         {

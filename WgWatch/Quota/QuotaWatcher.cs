@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Options;
 using WgWatch.Mikrotik;
-using WgWatch.Mikrotik.Model;
 using WgWatch.Options;
 
 namespace WgWatch.Quota;
@@ -22,14 +21,20 @@ public class QuotaWatcher : BackgroundService
     private async Task Setup()
     {
         var interfaces = await _restApi.ReadInterfaces();
+        
         foreach (var interfaceConfig in _hostOptions.Interfaces)
         {
-            var quota = new Quota
+            var monitoredInterface = interfaces?.FirstOrDefault(i => i.Name == interfaceConfig.Name);
+            if (monitoredInterface is null)
+            {
+                _logger.LogWarning($"{interfaceConfig.Name} was not found on Mikrotik. Skipping");
+                continue;
+            }
+            var quota = new Quota(monitoredInterface)
             {
                 Action = interfaceConfig.Action,
                 Period = interfaceConfig.Period,
                 QuotaLimit = interfaceConfig.Quota,
-                MonitoredInterface = interfaces.FirstOrDefault(i => i.Name == interfaceConfig.Name)
             };
             quota.LoadFromFile();
             quota.SaveToFile();
@@ -42,6 +47,11 @@ public class QuotaWatcher : BackgroundService
     private async Task UpdateInterfaces()
     {
         var interfaces = await _restApi.ReadInterfaces();
+        if (interfaces is null)
+        {
+            _logger.LogWarning($"Could not read interfaces from Mikrotik or returned empty list");
+            return;
+        }
         foreach (var quota in _quotas)
         {
             quota.MonitoredInterface = interfaces.First(i => i.Name == quota.MonitoredInterface.Name);

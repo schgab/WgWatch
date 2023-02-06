@@ -3,7 +3,7 @@ namespace WgWatch.Options;
 public class InterfaceOptions
 {
     public string? Name { get; set; }
-    public ulong Quota { get; set; }
+    public double Quota { get; set; }
     public int Period { get; set; }
     public ActionOnQuotaExceeded Action { get; set; }
 }
