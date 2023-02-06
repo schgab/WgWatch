@@ -6,7 +6,7 @@ namespace WgWatch.Quotas;
 
 public class QuotaWatcher : BackgroundService
 {
-    private const int Interval = 1000 * 5;
+    private const int Interval = 1000 * 1;
     private readonly ILogger<QuotaWatcher> _logger;
     private readonly RestApi _restApi;
     private readonly MikrotikHostOptions _hostOptions;

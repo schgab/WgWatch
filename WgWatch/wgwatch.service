@@ -3,7 +3,8 @@ Description=monitors interfaces on a mikrotik router over rest
 
 [Service]
 Type=notify
-ExecStart=/home/mon/wgwatch/publish/WgWatch
+WorkingDirectory=/opt/wgwatch
+ExecStart=/opt/wgwatch/WgWatch
 
 [Install]
 WantedBy=multi-user.target
