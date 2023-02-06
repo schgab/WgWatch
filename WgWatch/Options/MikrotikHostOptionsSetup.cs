@@ -28,6 +28,7 @@ public class MikrotikHostOptionsSetup : IConfigureOptions<MikrotikHostOptions>
             PropertyNameCaseInsensitive = true,
             Converters = { new JsonStringEnumConverter() }
         });
+        _logger.LogInformation($"Querying host {mikOptions.Endpoint} every {mikOptions.IntervalInMinutes} minutes");
         options.Endpoint = mikOptions!.Endpoint;
         options.IntervalInMinutes = mikOptions.IntervalInMinutes;
         options.Password = mikOptions.Password;
